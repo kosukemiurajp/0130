@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script language="javascript" type="text/javascript">
+      // 発見済みの素数
+      var sosu = [2,3];
+      // 発見済みの素数の最大値
+      var sosuMax = 3;
+    
+      function OnButtonClick() {
+        // テキストボックスの入力値を取得
+        var val1 = parseInt(document.getElementById("val1").value);
+        // 入力値が数値以外の場合、プログラムを終了する
+        if(isNaN(val1)) {
+          alert("数値以外が入力されました。\r\nプログラムを終了します。");
+          return;
+        }
+        
+        sosuCount(0, val1);
+        console.log('  *  ');
+        console.log(' * * ');
+        console.log('*****');
+      }
+      
+      // 引数が素数であるかどうかを判断する
+      // 引数: x 判断する対象の数値
+      // 戻り値: true=素数、false=素数ではない
+      function jugde(x) {
+        // 発見済みの素数で割り切れるかを試す
+        for(i = 0; i < sosu.length && sosu[i] < x; i++) {
+          if(0 == x % sosu[i]) {
+            // 割り切れた数値が存在するので、素数ではない
+            return false;
+          }
+        }
+        // 素数かどうかを判断するため、xをsosuMax+1～x-1で割る
+        if(sosuMax+1 < x) { 
+          for(i = sosuMax+1 ; i < x; i++) {
+            if(0 == x % i) {
+              // 割り切れた数値が存在するので、素数ではない
+              return false;
+            }
+          }
+        }
+        // xは素数だった
+        return true;
+      }
+      
+      // 素数を数える。3個見つけたら終了する再帰処理
+      // 引数: cnt=見つけた素数の数
+      //       x=素数かどうかを判断する数値。処理毎に1ずつ増やす
+      // 戻り値: なし
+      function sosuCount(cnt, x){
+        if(cnt > 2) {
+          // cntが2を超えている場合、3個発見済みなので処理を終了
+          return;
+        } else {
+          // cntが2を超えていない場合、処理を継続
+          if(jugde(x)) {
+            // xが素数の場合
+            sosu.push(x);
+            sosuMax = x;
+            console.log(x);
+            cnt++;
+          }
+          // xに加算して次の処理を行う
+          sosuCount(cnt, x+1);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <button type="button" id="calc" onclick="OnButtonClick();">
+      <font size="2">実行</font>
+    </button>
+    <input type="text" id="val1" size="30" maxlength="20">
+  </body>
+</html>
